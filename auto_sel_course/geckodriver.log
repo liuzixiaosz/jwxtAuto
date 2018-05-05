@@ -1,0 +1,15 @@
+1520604945556	geckodriver	INFO	geckodriver 0.19.1
+1520604945564	geckodriver	INFO	Listening on 127.0.0.1:50984
+1520604946641	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "-marionette" "-profile" "/var/folders/3l/b89mc68x1wgc75399cb0tbdm0000gn/T/rust_mozprofile.OkMoOluc66Cf"
+1520604947378	Marionette	INFO	Enabled via --marionette
+2018-03-09 22:15:48.537 plugin-container[1054:36006] *** CFMessagePort: bootstrap_register(): failed 1100 (0x44c) 'Permission denied', port = 0x8143, name = 'com.apple.tsm.portname'
+See /usr/include/servers/bootstrap_defs.h for the error codes.
+1520604949120	Marionette	INFO	Listening on port 50995
+1520604949140	Marionette	WARN	TLS certificate errors will be ignored for this session
+2018-03-09 22:15:50.239 plugin-container[1055:36092] *** CFMessagePort: bootstrap_register(): failed 1100 (0x44c) 'Permission denied', port = 0x8607, name = 'com.apple.tsm.portname'
+See /usr/include/servers/bootstrap_defs.h for the error codes.
+JavaScript warning: http://jwxt.sustc.edu.cn/jsxsd/js/easyui/jquery.easyui.min.js, line 7935: unreachable code after return statement
+JavaScript warning: http://jwxt.sustc.edu.cn/jsxsd/js/easyui/jquery.easyui.min.js, line 7935: unreachable code after return statement
+JavaScript error: http://jwxt.sustc.edu.cn/jsxsd/xsxkkc/comeInGgxxkxk, line 359: TypeError: parent.window.document.getElementById(...) is null
+2018-03-10 21:44:10.276 plugin-container[15139:1670491] *** CFMessagePort: bootstrap_register(): failed 1100 (0x44c) 'Permission denied', port = 0x8027, name = 'com.apple.tsm.portname'
+See /usr/include/servers/bootstrap_defs.h for the error codes.
