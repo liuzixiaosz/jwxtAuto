@@ -1,16 +1,14 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 from selenium import webdriver
 from selenium import common
-import time, subprocess, sys
+import time, subprocess, sys, os
 
 url = 'http://jwxt.sustc.edu.cn/jsxsd/'  # 选课系统
-home_val = subprocess.Popen("echo $HOME", stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)\
-    .stdout\
-    .readline()\
-    .strip()
-gk_path = "%s/PycharmProjects/jwxt_auto/auto_sel_course/geckodriver" % home_val
-info_path = "%s/Desktop/Documents/userinfo" % home_val
+abs_path = os.path.abspath('.')
+driver_path = abs_path + os.sep + "geckodriver"
+info_path = abs_path + os.sep + "courseInfo.txt"
 
 url_multimajor = 'http://jwxt.sustc.edu.cn/jsxsd/xsxkkc/comeInFawxk'  # 跨专业选课
 url_multigrade = 'http://jwxt.sustc.edu.cn/jsxsd/xsxkkc/comeInKnjxk'  # 专业内跨年级选课
@@ -18,14 +16,9 @@ url_public = 'http://jwxt.sustc.edu.cn/jsxsd/xsxkkc/comeInGgxxkxk'  # 公选课�
 url_optional = 'http://jwxt.sustc.edu.cn/jsxsd/xsxkkc/comeInXxxk' #选修选课
 url_repulsory = 'http://jwxt.sustc.edu.cn/jsxsd/xsxkkc/comeInBxxk' #必修选课
 url_plan = 'http://jwxt.sustc.edu.cn/jsxsd/xsxkkc/comeInBxqjhxk' #计划选课
-url_set = {'bx': url_repulsory,'xx': url_optional,'kj': url_multigrade,
+url_map = {'bx': url_repulsory,'xx': url_optional,'kj': url_multigrade,
            'kz': url_multimajor, 'gx': url_public, 'jh': url_plan}
-center = 'http://jwxt.sustc.edu.cn/jsxsd/xsxk/xsxk_index?jx0502zbid=334A7F7E4AB340C7913B2AB0A8FBE871'
-
-# f = open(info_path, 'r')
-# account = f.readline()
-# password = f.readline()
-#
+center = 'http://jwxt.sustc.edu.cn/jsxsd/xsxk/xsxk_index?jx0502zbid=D102885918754CD79C2E3F167A288A11'
 
 def dealAlerts(browser, sleeptime, loop=5):
     if loop == 0:
@@ -74,8 +67,8 @@ def login(browser, username, password):
         return False
 
 def get_info(browser, courseInfo):
-    c = courseInfo.split(' ')
-    browser.get(url_set[c[1]])
+    c = courseInfo.strip().split(' ')
+    browser.get(url_map[c[1]])
     if c[1] == 'xx' or c[1] == 'bx':
         limit = True
     else:
@@ -87,8 +80,7 @@ def get_info_and_select(browser, courseInfo):
     select(browser, course=course, rank=rank,limit=limit)
 
 def main(argv):
-    browser = webdriver.Firefox \
-        (executable_path=gk_path)  # geckodriver 路径
+    browser = webdriver.Firefox(executable_path=driver_path)  #driver 路径
     browser.get(url)  # enter website
     account = argv[0]
     password = argv[1]
@@ -99,18 +91,15 @@ def main(argv):
     while browser.current_url != center:
         browser.get(center)  # 选课中心
     print '登录成功！'
-    print '请输入所有要抢课信息，结束一条信息请按回车，信息完成请输入end：'
-    print '格式：课程号 选课类别 搜索后出现在选课系统第几行\n(bx:必修选课, xx:选修选课, jh:本学期计划选课, ' \
-          'kj:专业内跨年级选课, kz:跨专业选课, gx:公选课选课. \n 样例: HUM002 gx 1)'
-    while True:
-        courseInfo = raw_input()
-        if courseInfo == 'end':
+    print '读取成功'
+    #print '格式：课程号 选课类别 搜索后出现在选课系统第几行\n(bx:必修选课, xx:选修选课, jh:本学期计划选课, ' \
+          #'kj:专业内跨年级选课, kz:跨专业选课, gx:公选课选课. \n 样例: HUM002 gx 1)'
+
+    courseArr = open(info_path, "r").readlines()
+    
+    while time.localtime().tm_min == 59:
+        if time.localtime().tm_sec == 0:  # waiting when now is 12:59:xx, when now comes to 13:00, break waiting
             break
-        courseArr.append(courseInfo)
-    #
-    # while time.localtime().tm_min == 59:
-    #     if time.localtime().tm_sec == 0:  # waiting when now is 12:59:xx, when now comes to 13:00, break waiting
-    #         break
 
     browser.get(center)
     for ca in courseArr:
@@ -118,4 +107,5 @@ def main(argv):
 
 if __name__ == '__main__':
     main(sys.argv[1:])
+
 
